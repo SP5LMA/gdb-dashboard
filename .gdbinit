@@ -58,7 +58,7 @@ list of all the available styles can be obtained with (from GDB itself):
 
     python from pygments.styles import *
     python for style in get_all_styles(): print(style)''',
-                'default': 'monokai'
+                'default': 'paraiso-dark'
             },
             'discard_scrollback': {
                 'doc': '''Discard the scrollback buffer at each redraw.
@@ -1420,7 +1420,7 @@ The instructions constituting the current statement are marked, if available.'''
             if self.show_opcodes:
                 # fetch and format opcode
                 region = inferior.read_memory(addr, length)
-                opcodes = (' '.join('{:02x}'.format(ord(byte)) for byte in region))
+                opcodes = '| ' + (' '.join('{:02x}'.format(ord(byte)) for byte in region))
                 opcodes += (max_length - len(region)) * 3 * ' ' + '  '
             else:
                 opcodes = ''
@@ -1498,7 +1498,7 @@ A value of 0 uses the whole height.''',
             },
             'opcodes': {
                 'doc': 'Opcodes visibility flag.',
-                'default': False,
+                'default': True,
                 'name': 'show_opcodes',
                 'type': bool
             },
@@ -2369,6 +2369,18 @@ set print pretty on
 set print array off
 set print array-indexes on
 set python print-stack full
+
+define my-source-profile
+  dashboard -layout assembly !breakpoints !expressions !history memory registers source !stack !threads !variables
+  dashboard assembly -style height 5
+  dashboard source -style height 15
+end
+
+define my-assembly-profile
+  dashboard -layout assembly !breakpoints !expressions !history memory registers source !stack !threads !variables
+  dashboard assembly -style height 17
+  dashboard source -style height 5
+end
 
 # Start ------------------------------------------------------------------------
 
